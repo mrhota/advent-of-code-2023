@@ -45,6 +45,27 @@
      (apply +))
 
 
+(defn min-cubes-possible
+  "give a vector of game-id and a sequence of draws, return a vector of
+   the minimum number of cubes needed to in order to make that game possible.
+   
+   e.g.:
+   [1 [{:red 4 :blue 3}
+       {:red 1 :green 2 :blue 6}
+       {:green 2}]]
+
+   results in
+   [4 2 6], meaning 4 red cubes, 2 green cubes, and 6 blue cubes."
+  [[_ draws]]
+  [(apply max (keep :red draws))
+   (apply max (keep :green draws))
+   (apply max (keep :blue draws))])
+
+(->> input/data
+     (map min-cubes-possible)
+     (map #(reduce * %))
+     (apply +))
+
 (comment
   ;; Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
   ;; Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
@@ -89,6 +110,8 @@
          8))
 
   (map game-possible sample-game-data)
+
+  (map min-cubes-possible sample-game-data)
 
   (defn game-determination
     [game-data]
